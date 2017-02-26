@@ -92,7 +92,7 @@ qplot(x= steps_per_day$steps, main= "Mean total number of steps taken per day", 
   labs(linetype="Legend") 
 ```
 
-![plot of chunk unnamed-chunk-2](Plot 1,png)
+![plot of chunk unnamed-chunk-2](plot1.png)
 
 ```r
 #What is the average daily activity pattern?
