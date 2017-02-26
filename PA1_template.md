@@ -7,12 +7,10 @@ output:
   html_document: default
 ---
 
-```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE)
-```
 
-```{r}
 
+
+```r
 library(ggplot2)
 library(scales)
 library(Hmisc)
@@ -35,23 +33,55 @@ dataURL <-"https://d396qusza40orc.cloudfront.net/repdata%2Fdata%2Factivity.zip"
 
 
 loadData(dataURL, "activity.csv")
+```
+
+```
+## Data already downloaded.
+```
+
+```r
 active <- read.csv("activity.csv")
 
 active$date <- as.Date(active$date, format = "%Y-%m-%d")
 active$interval <- as.factor(active$interval)
 str(active)
+```
 
+```
+## 'data.frame':	17568 obs. of  3 variables:
+##  $ steps   : int  NA NA NA NA NA NA NA NA NA NA ...
+##  $ date    : Date, format: "2012-10-01" "2012-10-01" ...
+##  $ interval: Factor w/ 288 levels "0","5","10","15",..: 1 2 3 4 5 6 7 8 9 10 ...
+```
+
+```r
 #What is mean total number of steps taken per day?
 
 steps_per_day <- aggregate(steps ~ date, active, sum)
 colnames(steps_per_day) <- c("date","steps")
 head(steps_per_day)
+```
 
+```
+##         date steps
+## 1 2012-10-02   126
+## 2 2012-10-03 11352
+## 3 2012-10-04 12116
+## 4 2012-10-05 13294
+## 5 2012-10-06 15420
+## 6 2012-10-07 11015
+```
+
+```r
 ggplot(steps_per_day, aes(x = steps)) + 
   geom_histogram(fill = "green", binwidth = 1000) + 
   labs(title="Total number of Steps Taken per Day", 
        x = "Number of Steps per Day", y = "Number of times in a day(Count)") + theme_bw() 
+```
 
+![plot of chunk unnamed-chunk-2](figure/unnamed-chunk-2-1.png)
+
+```r
 #What is the average daily activity pattern?
 
 steps_per_interval <- aggregate(active$steps, 
@@ -67,7 +97,11 @@ ggplot(steps_per_interval, aes(x=interval, y=steps)) +
   geom_line(color="orange", size=1) +  
   labs(title="Average Daily Activity Pattern", x="Interval", y="Number of steps") +  
   theme_bw()
+```
 
+![plot of chunk unnamed-chunk-2](figure/unnamed-chunk-2-2.png)
+
+```r
 #Imputing missing values
 
 missing_vals <- sum(is.na(active$steps))
@@ -87,8 +121,24 @@ active_fill <- data.frame(
   date = active$date,  
   interval = active$interval)
 str(active_fill)
+```
 
+```
+## 'data.frame':	17568 obs. of  3 variables:
+##  $ steps   : num  1.717 0.3396 0.1321 0.1509 0.0755 ...
+##  $ date    : Date, format: "2012-10-01" "2012-10-01" ...
+##  $ interval: Factor w/ 288 levels "0","5","10","15",..: 1 2 3 4 5 6 7 8 9 10 ...
+```
+
+```r
 sum(is.na(active_fill$steps))
+```
+
+```
+## [1] 0
+```
+
+```r
 fill_steps_per_day <- aggregate(steps ~ date, active_fill, sum)
 colnames(fill_steps_per_day) <- c("date","steps")
 
@@ -97,7 +147,11 @@ ggplot(fill_steps_per_day, aes(x = steps)) +
   geom_histogram(fill = "blue", binwidth = 1000) + 
   labs(title="Total number of Steps Taken per Day", 
        x = "Number of Steps per Day", y = "Number of times in a day(Count)") + theme_bw() 
+```
 
+![plot of chunk unnamed-chunk-2](figure/unnamed-chunk-2-3.png)
+
+```r
 steps_mean_fill   <- mean(fill_steps_per_day$steps, na.rm=TRUE)
 steps_median_fill <- median(fill_steps_per_day$steps, na.rm=TRUE)
 
@@ -137,7 +191,7 @@ ggplot(data_weekdays, aes(x=interval, y=steps)) +
   facet_wrap(~ dayofweek, nrow=2, ncol=1) +
   labs(x="Interval", y="Number of steps") +
   theme_bw()
-
-
 ```
+
+![plot of chunk unnamed-chunk-2](figure/unnamed-chunk-2-4.png)
 

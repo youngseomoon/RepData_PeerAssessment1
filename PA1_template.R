@@ -1,17 +1,3 @@
----
-title: "PA1_template"
-author: "Youngseo Moon"
-date: "February 25, 2017"
-output:
-  pdf_document: default
-  html_document: default
----
-
-```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE)
-```
-
-```{r}
 
 library(ggplot2)
 library(scales)
@@ -137,7 +123,4 @@ ggplot(data_weekdays, aes(x=interval, y=steps)) +
   facet_wrap(~ dayofweek, nrow=2, ncol=1) +
   labs(x="Interval", y="Number of steps") +
   theme_bw()
-
-
-```
 
